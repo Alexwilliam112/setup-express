@@ -33,6 +33,26 @@ module.exports = (() => {
             });
         }
 
+        static writeGitignore() {
+            const gitignoreSrc = path.join(__dirname, 'lib', 'gitignoreTemplate.txt');
+            const gitignoreDest = path.join(Core.currentDir, '.gitignore');
+
+            if (fs.existsSync(gitignoreSrc)) {
+                if (fs.existsSync(gitignoreDest)) {
+                    console.log(chalk.red(`File already exists: ${gitignoreDest}`));
+                    Core.tasks.push({ STATUS: chalk.red('FAILED'), TASK: 'Write .gitignore', DESCRIPTION: `File already exists: ${gitignoreDest}` });
+                } else {
+                    const gitignoreContent = fs.readFileSync(gitignoreSrc, 'utf-8');
+                    fs.writeFileSync(gitignoreDest, gitignoreContent);
+                    console.log(chalk.green(`Created: ${gitignoreDest}`));
+                    Core.tasks.push({ STATUS: chalk.green('SUCCESS'), TASK: 'Write .gitignore', DESCRIPTION: gitignoreDest });
+                }
+            } else {
+                console.log(chalk.red(`Source .gitignore file not found: ${gitignoreSrc}`));
+                Core.tasks.push({ STATUS: chalk.red('FAILED'), TASK: 'Write .gitignore', DESCRIPTION: `Source .gitignore file not found: ${gitignoreSrc}` });
+            }
+        }
+
         static buildModels() {
             const schemaPath = path.join(Core.currentDir, 'schema.js');
 
@@ -65,14 +85,14 @@ module.exports = (() => {
                         .map(([name, type]) => `${name}:${type}`)
                         .join(',');
 
-                    const modelSql = `npx sequelize-cli model:generate --name ${model.model_name} --attributes ${attributes}`;
+                    const modelSql = `sequelize model --name ${model.model_name} --attributes ${attributes}`;
 
                     try {
                         execSync(modelSql, { stdio: 'inherit' });
                         console.log(chalk.green(`Generated model ${model.model_name}`));
                         Core.tasks.push({ STATUS: chalk.green('SUCCESS'), TASK: `Generate model ${model.model_name}`, DESCRIPTION: modelSql });
                     } catch (error) {
-                        console.log(chalk.red(`Error generating model ${model.model_name}: ${error.message}`));
+                        console.log(chalk.red(`ERROR ${model.model_name}: ${error.message}`));
                         Core.tasks.push({ STATUS: chalk.red('FAILED'), TASK: `Generate model ${model.model_name}`, DESCRIPTION: `Error: ${error.message}` });
                     }
                 });
@@ -84,16 +104,24 @@ module.exports = (() => {
         }
 
         static buildDB() {
+            let errPoint = 0
             try {
                 execSync(`npx sequelize-cli db:drop`, { stdio: 'inherit' });
                 execSync(`npx sequelize-cli db:create`, { stdio: 'inherit' });
+                errPoint++;
                 execSync(`npx sequelize-cli db:migrate`, { stdio: 'inherit' });
                 console.log(chalk.green('Database created and migrated successfully'));
                 Core.tasks.push({ STATUS: chalk.green('SUCCESS'), TASK: 'Database creation and migration', DESCRIPTION: 'Database created and migrated successfully' });
 
             } catch (err) {
-                console.log(chalk.red(`ERROR EXECUTING BUILD DB: ${err.message}`));
-                Core.tasks.push({ STATUS: chalk.red('FAILED'), TASK: 'Database creation and migration', DESCRIPTION: `ERROR EXECUTING BUILD DB: ${err.message}` });
+                let errDesc = 'No Sequelize Config File Found. Please run build-model'
+                if(errPoint === 1) {
+                    errDesc = 'No Migration File Found.'
+                }
+
+                console.log(err);
+                console.log(chalk.red(errDesc));
+                Core.tasks.push({ STATUS: chalk.red('FAILED'), TASK: 'Database creation and migration', DESCRIPTION: errDesc });
             }
         }
     }

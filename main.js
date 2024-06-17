@@ -9,12 +9,14 @@ module.exports = (() => {
             switch (opt) {
                 case '1': {
                     Core.copyTemplateFiles(Core.templateDir, Core.currentDir);
+                    Core.writeGitignore()
                     console.log(chalk.green('TASK COMPLETED: EXPRESS PROJECT BOILERPLATE'));
                     break;
                 }
 
                 case '2': {
                     Core.copyTemplateFiles(Core.templateDir2, Core.currentDir);
+                    Core.writeGitignore()
                     console.log(chalk.green('TASK COMPLETED: EXPRESS PROJECT BOILERPLATE'));
                     break;
                 }
