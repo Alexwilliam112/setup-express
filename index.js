@@ -2,21 +2,25 @@
 
 const commands = process.argv.slice(2);
 const cmd = commands[0];
-const Core = require('./core.js');
+const Main = require('./main');
 
 switch (cmd) {
     case 'init': {
-        Core.init(commands[1]);
+        const opt = commands[1]
+        Main.init(opt);
         break;
     }
+
     case 'model-build': {
-        Core.buildModels();
+        Main.buildModels();
         break;
     }
+
     case 'client-build': {
         console.log('Client build command is not implemented yet.');
         break;
     }
+
     case 'help':
     default: {
         console.log(`
