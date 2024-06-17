@@ -41,6 +41,11 @@ module.exports = (() => {
             Main.displayTable();
         }
 
+        static buildClient() {
+            Core.copyClientTemplate(Core.clientDir, Core.currentDir);
+            console.log(chalk.green('TASK COMPLETED: REACT PROJECT BOILERPLATE'));
+        }
+
         static displayTable() {
             const table = new Table({
                 head: [chalk.white('STATUS'), chalk.white('TASK'), chalk.white('DESCRIPTION')]

@@ -7,6 +7,7 @@ module.exports = (() => {
     class Core {
         static templateDir = path.join(__dirname, 'assets');
         static templateDir2 = path.join(__dirname, 'assets2');
+        static clientDir = path.join(__dirname, 'client');
         static currentDir = process.cwd();
         static tasks = [];
 
@@ -31,6 +32,39 @@ module.exports = (() => {
                     }
                 }
             });
+        }
+
+        static copyClientTemplate(srcDir, destDir) {
+            fs.readdirSync(srcDir).forEach(file => {
+                const srcFile = path.join(srcDir, file);
+                const destFile = path.join(destDir, file);
+
+                if (fs.lstatSync(srcFile).isDirectory()) {
+                    const newDestDir = path.join(destDir, path.basename(srcFile));
+                    if (!fs.existsSync(newDestDir)) {
+                        fs.mkdirSync(newDestDir);
+                    }
+                    Core.copyClientTemplate(srcFile, newDestDir);
+                } else {
+                    fs.copyFileSync(srcFile, destFile);
+                    console.log(chalk.green(`Copied: ${destFile}`));
+                    Core.tasks.push({ STATUS: chalk.green('SUCCESS'), TASK: `Copy ${file}`, DESCRIPTION: destFile });
+                }
+            });
+
+            const appCssPath = path.join(destDir, 'src', 'App.css');
+            if (fs.existsSync(appCssPath)) {
+                fs.unlinkSync(appCssPath);
+                console.log(chalk.green(`Removed: ${appCssPath}`));
+                Core.tasks.push({ STATUS: chalk.green('SUCCESS'), TASK: 'Remove App.css', DESCRIPTION: appCssPath });
+            }
+
+            const publicFolderPath = path.join(destDir, 'public');
+            if (fs.existsSync(publicFolderPath)) {
+                fs.rmdirSync(publicFolderPath, { recursive: true });
+                console.log(chalk.green(`Removed: ${publicFolderPath}`));
+                Core.tasks.push({ STATUS: chalk.green('SUCCESS'), TASK: 'Remove public folder', DESCRIPTION: publicFolderPath });
+            }
         }
 
         static writeGitignore() {

@@ -24,12 +24,7 @@ switch (cmd) {
     }
 
     case 'build-client': {
-        console.log('Coming Soon');
-        break;
-    }
-
-    case 'build-redux': {
-        console.log('Coming Soon');
+        Main.buildClient();
         break;
     }
 
@@ -63,11 +58,6 @@ switch (cmd) {
             },
             {
                 number: 6,
-                commandLine: 'build-redux',
-                Function: 'Build redux thunk in client directory'
-            },
-            {
-                number: 7,
                 commandLine: 'help',
                 Function: 'Display this command lists message'
             },
