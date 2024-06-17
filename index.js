@@ -11,8 +11,13 @@ switch (cmd) {
         break;
     }
 
-    case 'model-build': {
+    case 'build-model': {
         Main.buildModels();
+        break;
+    }
+
+    case 'build-db': {
+        Main.buildDB();
         break;
     }
 
@@ -28,7 +33,8 @@ Usage: npx gen <command>
 
 Commands:
 init          Initialize the project with the template
-model-build  Execute sequelize commandline: npx sequelize model:create
+build-model   Execute sequelize create models
+build-db      Execute sequelize create db and migrate all
 client-build  Pending.
 help          Display this help message
         `);

@@ -26,6 +26,10 @@ module.exports = (() => {
         static buildModels() {
             Core.buildModels();
         }
+
+        static buildDB() {
+            Core.buildDB()
+        }
     }
     return Main;
 })();

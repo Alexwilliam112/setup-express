@@ -67,6 +67,18 @@ module.exports = (() => {
                 console.error('SCHEMA FILE NOT FOUND.');
             }
         }
+
+        static buildDB() {
+            try {
+                execSync(`npx sequelize-cli db:drop`, { stdio: 'inherit' });
+                execSync(`npx sequelize-cli db:create`, { stdio: 'inherit' });
+                execSync(`npx sequelize-cli db:migrate`, { stdio: 'inherit' });
+                console.log(`Database created and migrated successfully.`);
+                
+            } catch (err) {
+                console.log(`ERROR EXECUTING BUILD DB: ${err}`);
+            }
+        }
     }
 
     return Core;
