@@ -14,5 +14,9 @@
     "url": "github.com/Alexwilliam112/express-setup"
   },
   "author": "Alexander William",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "cli-table3": "^0.6.5"
+  }
 }

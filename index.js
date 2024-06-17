@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
+const Table = require('cli-table3');
+const chalk = require('chalk');
 const commands = process.argv.slice(2);
 const cmd = commands[0];
 const Main = require('./main');
 
 switch (cmd) {
     case 'init': {
-        const opt = commands[1]
+        const opt = commands[1];
         Main.init(opt);
         break;
     }
@@ -21,23 +23,73 @@ switch (cmd) {
         break;
     }
 
-    case 'client-build': {
-        console.log('Client build command is not implemented yet.');
+    case 'build-client': {
+        console.log('Coming Soon');
+        break;
+    }
+
+    case 'build-redux': {
+        console.log('Coming Soon');
         break;
     }
 
     case 'help':
     default: {
-        console.log(`
-Usage: npx gen <command>
+        const helpList = [
+            {
+                number: 1,
+                commandLine: 'init',
+                Function: 'Initialize the project with the template'
+            },
+            {
+                number: 2,
+                commandLine: 'build-model',
+                Function: 'Execute sequelize create models'
+            },
+            {
+                number: 3,
+                commandLine: 'build-db',
+                Function: 'Execute sequelize create db and migrate all'
+            },
+            {
+                number: 4,
+                commandLine: 'build-client',
+                Function: 'Build react-app on VITE framework'
+            },
+            {
+                number: 5,
+                commandLine: 'build-client',
+                Function: 'Build react-app on VITE framework'
+            },
+            {
+                number: 6,
+                commandLine: 'build-redux',
+                Function: 'Build redux thunk in client directory'
+            },
+            {
+                number: 7,
+                commandLine: 'help',
+                Function: 'Display this command lists message'
+            },
+        ]
 
-Commands:
-init          Initialize the project with the template
-build-model   Execute sequelize create models
-build-db      Execute sequelize create db and migrate all
-client-build  Pending.
-help          Display this help message
-        `);
+        const table = new Table({
+            head: [chalk.white('NO.'), chalk.white('COMMANDS'), chalk.white('DESCRIPTIONS')]
+        });
+
+        helpList.forEach(cli => {
+            table.push([
+                cli.number,
+                chalk.yellow(cli.commandLine),
+                cli.Function
+            ]);
+        });
+        
+        console.log(`==========================================`);
+        console.log(chalk.bold.yellow('SKYNET-15 BUILD TOOL by Alexander William'));
+        console.log(`==========================================`);
+        console.log(chalk.blue(`Usage: npx gen <command>`));
+        console.log(table.toString());
         break;
     }
 }
