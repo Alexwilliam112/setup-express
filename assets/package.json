@@ -5,7 +5,8 @@
     "main": "app.js",
     "scripts": {
         "test": "jest --runInBand --detectOpenHandles --forceExit",
-        "dev": "npx nodemon ./bin/www.js"
+        "dev": "npx nodemon ./bin/www.js",
+        "reset-db": "npx sequelize db:drop && npx sequelize db:create && npx sequelize db:migrate && npx sequelize db:seed:all"
     },
     "keywords": [],
     "author": "",
