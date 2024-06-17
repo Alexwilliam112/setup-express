@@ -5,9 +5,9 @@ const chalk = require('chalk');
 
 module.exports = (() => {
     class Core {
-        static templateDir = path.join(__dirname, 'assets');
-        static templateDir2 = path.join(__dirname, 'assets2');
-        static clientDir = path.join(__dirname, 'client');
+        static templateDir = path.join(__dirname, '../assets/server-1');
+        static templateDir2 = path.join(__dirname, '../assets/server-2');
+        static clientDir = path.join(__dirname, '../assets/client');
         static currentDir = process.cwd();
         static tasks = [];
 
@@ -68,7 +68,7 @@ module.exports = (() => {
         }
 
         static writeGitignore() {
-            const gitignoreSrc = path.join(__dirname, 'lib', 'gitignoreTemplate.txt');
+            const gitignoreSrc = path.join(__dirname, '../lib/gitignoreTemplate.txt');
             const gitignoreDest = path.join(Core.currentDir, '.gitignore');
 
             if (fs.existsSync(gitignoreSrc)) {
@@ -94,7 +94,7 @@ module.exports = (() => {
                 const schema = require(schemaPath);
 
                 try {
-                    const configSrc = path.join(__dirname, 'lib', 'config.json');
+                    const configSrc = path.join(__dirname, '../lib/config.json');
                     const configDest = path.join(Core.currentDir, 'config', 'config.json');
                     execSync(`npx sequelize-cli init`, { stdio: 'inherit' });
 
@@ -119,7 +119,7 @@ module.exports = (() => {
                         .map(([name, type]) => `${name}:${type}`)
                         .join(',');
 
-                    const modelSql = `sequelize model --name ${model.model_name} --attributes ${attributes}`;
+                    const modelSql = `npx sequelize-cli model:create --name ${model.model_name} --attributes ${attributes}`;
 
                     try {
                         execSync(modelSql, { stdio: 'inherit' });

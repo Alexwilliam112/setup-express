@@ -4,7 +4,7 @@ const Table = require('cli-table3');
 const chalk = require('chalk');
 const commands = process.argv.slice(2);
 const cmd = commands[0];
-const Main = require('./main');
+const Main = require('./core/main');
 
 switch (cmd) {
     case 'init': {
@@ -33,8 +33,8 @@ switch (cmd) {
         const helpList = [
             {
                 number: 1,
-                commandLine: 'init',
-                Function: 'Initialize the project with the template'
+                commandLine: 'init <option_number>',
+                Function: 'Build the project boilerplate (default opt = 2)'
             },
             {
                 number: 2,
@@ -53,11 +53,6 @@ switch (cmd) {
             },
             {
                 number: 5,
-                commandLine: 'build-client',
-                Function: 'Build react-app on VITE framework'
-            },
-            {
-                number: 6,
                 commandLine: 'help',
                 Function: 'Display this command lists message'
             },
@@ -74,7 +69,7 @@ switch (cmd) {
                 cli.Function
             ]);
         });
-        
+
         console.log(`==========================================`);
         console.log(chalk.bold.yellow('SKYNET-15 BUILD TOOL by Alexander William'));
         console.log(`==========================================`);
