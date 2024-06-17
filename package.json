@@ -1,0 +1,22 @@
+{
+  "name": "core-setup-express",
+  "version": "1.0.0",
+  "description": "personal express.js server setup",
+  "main": "index.js",
+  "bin": {
+    "gen": "./index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/Alexwilliam112/express-setup"
+  },
+  "author": "Alexander William",
+  "license": "MIT",
+  "dependencies": {
+    "app-root-path": "^3.1.0",
+    "core-setup-express": "file:core-setup-express-1.0.0.tgz"
+  }
+}
