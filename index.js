@@ -9,8 +9,8 @@ switch (cmd) {
         Core.init(commands[1]);
         break;
     }
-    case 'server-build': {
-        console.log('Server build command is not implemented yet.');
+    case 'model-build': {
+        Core.buildModels();
         break;
     }
     case 'client-build': {
@@ -24,7 +24,7 @@ Usage: npx gen <command>
 
 Commands:
 init          Initialize the project with the template
-server-build  Execute sequelize commandlines: init, db:create, model:create
+model-build  Execute sequelize commandline: npx sequelize model:create
 client-build  Pending.
 help          Display this help message
         `);
